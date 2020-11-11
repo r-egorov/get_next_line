@@ -6,11 +6,18 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 17:40:52 by cisis             #+#    #+#             */
-/*   Updated: 2020/11/11 20:37:08 by cisis            ###   ########.fr       */
+/*   Updated: 2020/11/11 20:52:07 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+int		check_remainder(char **line, char **remainder, size_t bytes_read)
+{
+	if ((!remainder) || (bytes_read == -1))
+		return (-1);
+	return (get_line(line, remainder));
+}
 
 int		get_next_line(int fd, char **line)
 {
@@ -37,5 +44,5 @@ int		get_next_line(int fd, char **line)
 			break;
 	}
 	free(buf);
-	return ();
+	return (check_remainder(line, &remainder, bytes_read));
 }
