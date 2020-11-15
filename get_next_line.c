@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 17:40:52 by cisis             #+#    #+#             */
-/*   Updated: 2020/11/15 13:57:12 by cisis            ###   ########.fr       */
+/*   Updated: 2020/11/15 16:19:09 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	get_line(char **line, char **remainder)
 
 static int	check_remainder(char **line, char **remainder, int bytes_read)
 {
-	if ((!remainder) || (bytes_read == -1))
+	if (bytes_read == -1)
 		return (-1);
 	return (get_line(line, remainder));
 }
@@ -45,16 +45,18 @@ static int	check_remainder(char **line, char **remainder, int bytes_read)
 int			get_next_line(int fd, char **line)
 {
 	static char	*remainder;
-	char		*buf;
+	char		buf[BUFFER_SIZE + 1];
 	char		*tmpbuf;
 	int			bytes_read;
 
-	if (BUFFER_SIZE < 1 || !(*line) ||
-	!(buf = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char))))
+	if (BUFFER_SIZE < 1)
 		return (-1);
-	while ((bytes_read = read(fd, buf, BUFFER_SIZE) > 0))
+	while ((bytes_read = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		buf[BUFFER_SIZE] = '\0';
+		if (bytes_read < BUFFER_SIZE)
+			buf[bytes_read] = '\0';
+		else
+			buf[BUFFER_SIZE] = '\0';
 		if (!remainder)
 			remainder = ft_strdup(buf);
 		else
@@ -66,6 +68,5 @@ int			get_next_line(int fd, char **line)
 		if (ft_strchr(remainder, '\n'))
 			break ;
 	}
-	free(buf);
 	return (check_remainder(line, &remainder, bytes_read));
 }
