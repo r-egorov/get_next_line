@@ -6,11 +6,11 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 20:38:53 by cisis             #+#    #+#             */
-/*   Updated: 2020/11/17 16:21:13 by cisis            ###   ########.fr       */
+/*   Updated: 2020/11/17 16:21:27 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t		ft_strlen(const char *s)
 {
