@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 17:40:52 by cisis             #+#    #+#             */
-/*   Updated: 2020/11/17 16:19:04 by cisis            ###   ########.fr       */
+/*   Updated: 2020/11/18 16:51:30 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,22 @@ static int	check_remainder(char **line, char **remainder, int bytes_read)
 		}
 		return (-1);
 	}
+	else if (bytes_read == 0 && !(*remainder))
+	{
+		*line = ft_strdup("");
+		return (0);
+	}
 	return (get_line(line, remainder));
 }
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*remainder[5120];
+	static char	*remainder[4096];
 	char		*buf;
 	char		*tmpbuf;
 	int			bytes_read;
 
-	if ((fd < 0) || (BUFFER_SIZE < 1) ||
+	if (fd < 0 || BUFFER_SIZE < 1 ||
 		(!(buf = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char)))))
 		return (-1);
 	while ((bytes_read = read(fd, buf, BUFFER_SIZE)) > 0)
@@ -75,5 +80,6 @@ int			get_next_line(int fd, char **line)
 			break ;
 	}
 	free(buf);
+	buf = NULL;
 	return (check_remainder(line, &remainder[fd], bytes_read));
 }
