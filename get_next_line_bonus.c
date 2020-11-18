@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 17:40:52 by cisis             #+#    #+#             */
-/*   Updated: 2020/11/18 17:44:23 by cisis            ###   ########.fr       */
+/*   Updated: 2020/11/18 18:34:20 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			get_next_line(int fd, char **line)
 	char		*tmpbuf;
 	int			bytes_read;
 
-	if (fd < 0 || BUFFER_SIZE < 1 ||
+	if (fd < 0 || line == NULL || BUFFER_SIZE < 1 ||
 		(!(buf = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char)))))
 		return (-1);
 	while ((bytes_read = read(fd, buf, BUFFER_SIZE)) > 0)
