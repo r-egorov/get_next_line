@@ -6,7 +6,7 @@
 /*   By: cisis <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 17:40:52 by cisis             #+#    #+#             */
-/*   Updated: 2020/11/18 18:34:20 by cisis            ###   ########.fr       */
+/*   Updated: 2020/12/01 13:15:11 by cisis            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,25 @@ static int	get_line(char **line, char **remainder)
 	char	*nwln;
 	char	*tmp;
 
-	nwln = NULL;
 	if ((nwln = ft_strchr(*remainder, '\n')))
 	{
 		*nwln = '\0';
 		tmp = *remainder;
-		*line = ft_strdup(*remainder);
-		*remainder = ft_strdup(++nwln);
+		if (!(*line = ft_strdup(*remainder)) ||
+			!(*remainder = ft_strdup(++nwln)))
+		{
+			free(tmp);
+			if (*remainder != NULL)
+				free(*remainder);
+			return (-1);
+		}
 		free(tmp);
 	}
 	else
 	{
-		*line = ft_strdup(*remainder);
+		if (!(*line = ft_strdup(*remainder)))
+			return (-1);
 		free(*remainder);
-		*remainder = NULL;
 		return (0);
 	}
 	return (1);
@@ -38,13 +43,10 @@ static int	get_line(char **line, char **remainder)
 
 static int	check_remainder(char **line, char **remainder, int bytes_read)
 {
-	if (bytes_read == -1)
+	if ((bytes_read == -1) || !(*remainder))
 	{
 		if (*remainder != NULL)
-		{
 			free(*remainder);
-			*remainder = NULL;
-		}
 		return (-1);
 	}
 	else if (bytes_read == 0 && !(*remainder))
@@ -80,6 +82,5 @@ int			get_next_line(int fd, char **line)
 			break ;
 	}
 	free(buf);
-	buf = NULL;
 	return (check_remainder(line, &remainder[fd], bytes_read));
 }
